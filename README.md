@@ -4,11 +4,9 @@ Developer sample written in Angular demonstrating Gemini multimodal (image and a
 
 ## Pre-requisites
 
-0. Node.js and npm
+1. Node.js and npm
   * Download and install Go: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
-
-
-0. Gemini API key
+2. Gemini API key
   * Launch Google AI Studio: https://aistudio.google.com/
   * Click “Get API Key”
 
@@ -22,3 +20,9 @@ npm start
 ```
 
 In the text box with placeholder "API key" enter your Gemini API key. You can find instructions how to use the app under "Instructions" when you open the user interface.
+
+## API key privacy
+
+Calling the Google AI Gemini API directly from the app frontend is recommended for prototyping only. We strongly recommend that you only call the Google AI Gemini API server-side to keep your API key safe. You risk potentially exposing your API key to malicious actors if you embed the API key directly in your web, mobile, or desktop app or fetch it remotely at runtime.
+
+Find an example how to do this in the following [Gemini tutorials](https://ai.google.dev/gemini-api/docs/get-started).
