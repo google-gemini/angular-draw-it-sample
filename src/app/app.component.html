@@ -1,0 +1,75 @@
+<div class="instructions">
+  To use the app make sure you generate a Gemini API key from
+  <a href="https://aistudio.google.com/app/apikey">here</a>. <br /><br />
+  This app sends the image from the canvas below and the prompt to Gemini Pro
+  Vision. You can enter the prompt with your voice using the Web Speech API. The
+  app will read Gemini's response using the Web Speech Synthesis API. You can
+  select a language for the Web Speech API from the dropdown below.
+  <br /><br />
+  You can clear the canvas by clicking on the trash bin which appears when you
+  move your cursor to the top left of the canvas.
+  <br /><br />
+  Try drawing something and asking Gemini what's on the canvas!
+</div>
+
+<app-canvas [width]="400" [height]="400" />
+<section class="prompt-controls">
+  <label>
+    API key:
+    <input
+      [(ngModel)]="apiKey"
+      placeholder="Enter your API key"
+      class="api-key-input"
+      type="text"
+    />
+  </label>
+  <div class="prompt-input-wrapper">
+    <label>
+      Prompt:
+      <input
+        [disabled]="speechActive"
+        [(ngModel)]="prompt"
+        placeholder="Type or ask a question..."
+        type="text"
+      />
+    </label>
+    <mat-icon
+      [hidden]="true"
+      (click)="speechInput()"
+      aria-hidden="false"
+      aria-label="Microphone"
+      fontIcon="microphone"
+    />
+    <button
+      mat-button
+      color="primary"
+      [class.spinner]="disabled"
+      [disabled]="disabled || prompt.length < 5 || speechActive"
+      (click)="recognize()"
+    >
+      Ask
+    </button>
+  </div>
+  <div class="prompt-config">
+    <label>
+      Output language:
+      <select [disabled]="speechActive" [(ngModel)]="currentLanguage">
+        @for (lang of languages; track lang.lang) {
+        <option [value]="lang.lang">{{ lang.label }}</option>
+        }
+      </select>
+    </label>
+  </div>
+</section>
+<div class="answer">
+  @if (error !== '') {
+    <span
+    class="error"
+      >{{error}}</span>
+    }
+  @if (output !== '') {
+  <span
+    ><span class="gemini-name">🤖 says:</span> <span [innerHTML]="output"></span
+  ></span>
+  }
+</div>

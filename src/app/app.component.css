@@ -30,6 +30,7 @@
 .prompt-controls input {
   font-size: 1em;
   padding: 8px;
+  width: calc(100% - 80px);
 }
 
 .prompt-controls mat-icon {
@@ -44,12 +45,12 @@
 
 .prompt-config {
   padding-top: 10px;
-  display: flex;
-  justify-content: space-around;
 }
 
 .prompt-config select {
-  width: calc(100% - 60px);
+  width: calc(100% - 135px);
+  height: 36px;
+  font-size: 1em;
   margin-right: 20px;
 }
 
@@ -99,4 +100,21 @@ app-canvas {
 
 .api-key-input {
   margin-bottom: 10px;
+}
+
+.prompt-input-wrapper {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.prompt-input-wrapper label input {
+  width: 230px;
+}
+
+.prompt-input-wrapper mat-icon {
+  margin-left: 12px;
+}
+
+.error {
+  color: red;
 }

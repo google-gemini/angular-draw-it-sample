@@ -40,66 +40,7 @@ import { GenerativeService } from './generative.service';
     FormsModule,
     MatIconModule,
   ],
-  template: `
-    <app-canvas [width]="400" [height]="400" />
-    <section class="prompt-controls">
-      <input
-        [(ngModel)]="apiKey"
-        placeholder="API key"
-        class="api-key-input"
-        type="text"
-      />
-      <input
-        [disabled]="speechActive"
-        [(ngModel)]="prompt"
-        placeholder="Type or ask a question..."
-        type="text"
-      />
-      <div class="prompt-config">
-        <select [disabled]="speechActive" [(ngModel)]="currentLanguage">
-          @for (lang of languages; track lang.lang) {
-          <option [value]="lang.lang">{{ lang.label }}</option>
-          }
-        </select>
-        <mat-icon
-          [hidden]="true"
-          (click)="speechInput()"
-          aria-hidden="false"
-          aria-label="Microphone"
-          fontIcon="microphone"
-        />
-        <button
-          mat-button
-          color="primary"
-          [class.spinner]="disabled"
-          [disabled]="disabled || prompt.length < 5 || speechActive"
-          (click)="recognize()"
-        >
-          Ask
-        </button>
-      </div>
-    </section>
-    <div class="answer">
-      @if (output !== '') {
-      <span><span class="gemini-name">🤖 says:</span> <span [innerHTML]="output"></span></span>
-      }
-    </div>
-    <div class="instructions">
-      <details>
-        <summary>Instructions</summary>
-        This app sends the image from the canvas below and the prompt to Gemini
-        Pro Vision. You can enter the prompt with your voice using the Web
-        Speech API. The app will read Gemini's response using the Web Speech
-        Synthesis API. You can select a language for the Web Speech API from the
-        dropdown below.
-        <br /><br />
-        You can clear the canvas by clicking on the trash bin which appears when
-        you move your cursor to the top left of the canvas.
-        <br /><br />
-        Try drawing something and asking Gemini what's on the canvas!
-      </details>
-    </div>
-  `,
+  templateUrl: 'app.component.html',
   styleUrl: 'app.component.css',
 })
 export class AppComponent {
@@ -109,7 +50,6 @@ export class AppComponent {
   private model: GenerativeModel | null = null;
   private generativeService: GenerativeService = inject(GenerativeService);
 
-
   protected disabled = false;
   protected speechActive = false;
   protected output: SafeHtml = '';
@@ -117,6 +57,7 @@ export class AppComponent {
   protected languages = this.speech.languages;
   protected currentLanguage = 'en-US';
   protected apiKey = '';
+  protected error: any = null;
 
   async speechInput() {
     this.prompt = '';
@@ -133,6 +74,8 @@ export class AppComponent {
   async recognize() {
     if (!this.canvas()) return;
     if (!this.prompt) return;
+
+    this.error = null;
 
     console.info('Querying the model with prompt', this.prompt);
     const data = this.canvas()!.getBase64Drawing();
@@ -155,11 +98,15 @@ export class AppComponent {
 
       const response = await result.response;
       const text = response.text();
-      
-      this.output = this.sanitizer.bypassSecurityTrustHtml(await marked.parse(text));
+
+      this.output = this.sanitizer.bypassSecurityTrustHtml(
+        await marked.parse(text)
+      );
 
       console.info('Received output from the model', text);
       await this.say(text);
+    } catch (e) {
+      this.error = e;
     } finally {
       this.disabled = false;
     }
