@@ -2,6 +2,14 @@
 
 Developer sample written in Angular demonstrating Gemini multimodal (image and audio) input and understanding. The user enters a prompt and the app generates images via VertexAI’s image generation which the user can after that preview in a three-dimensional gallery. The user has an input where they can ask a question about the images. Using Web Audio’s Speech Synthesis API we read Gemini’s answer for the images.
 
+<a href="https://idx.google.com/import?url=https://github.com/google-gemini/angular-draw-it-sample">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://cdn.idx.dev/btn/open_dark_32@2x.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://cdn.idx.dev/btn/open_light_32@2x.png">
+  <img height="32" alt="Open in IDX" src="https://cdn.idx.dev/btn/open_purple_32@2x.png">
+</picture>
+</a>
+
 ## Pre-requisites
 
 1. Node.js and npm
